@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回應調整指令指南</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind to use Noto Sans for Chinese -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Noto+Sans+TC:wght@100..900&display=swap');
+        body {
+            font-family: 'Noto Sans TC', 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        /* Custom styling for responsive tables (optional, but good for clarity) */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .styled-table th, .styled-table td {
+            white-space: nowrap; /* Prevent command examples from wrapping */
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#4f46e5',
+                        'secondary': '#10b981',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div class="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-6 md:p-10">
+
+        <!-- Header -->
+        <header class="mb-8 border-b pb-4">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-primary mb-2">
+                回應調整指令指南
+            </h1>
+            <p class="text-lg text-gray-600">
+                本文件彙整了模型回應的五大類控制指令及其功能與實際應用範例。
+            </p>
+        </header>
+
+        <!-- Command Sections -->
+        
+        <!-- Helper function to generate command table HTML -->
+        <script>
+            /**
+             * Generates a responsive HTML table for a given set of commands.
+             * @param {string} title - The title of the section.
+             * @param {Array<Array<string>>} data - The table data: [Command, Function, Example].
+             * @returns {string} The HTML string for the section.
+             */
+            function generateCommandSection(title, data) {
+                let rows = data.map(([cmd, func, example]) => `
+                    <tr class="hover:bg-indigo-50 transition duration-150 ease-in-out">
+                        <td class="px-6 py-4 text-sm font-mono text-primary bg-indigo-50 rounded-l-lg border-b border-gray-100">${cmd}</td>
+                        <td class="px-6 py-4 text-sm text-gray-700 border-b border-gray-100">${func}</td>
+                        <td class="px-6 py-4 text-sm font-mono text-gray-900 bg-gray-50 rounded-r-lg border-b border-gray-100">${example}</td>
+                    </tr>
+                `).join('');
+
+                return `
+                    <section class="mb-10">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 border-l-4 border-secondary pl-3">${title}</h2>
+                        <div class="table-container shadow-md rounded-xl overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200 styled-table">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider rounded-tl-xl">指令</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">功能</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider rounded-tr-xl">實際應用範例</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-100">
+                                    ${rows}
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                `;
+            }
+
+            // Data for each section
+            const sections = [
+                {
+                    title: "一、輸出長度與細節控制指令",
+                    data: [
+                        ["/TLDR", "摘要要點、生成重點總結", "/TLDR: 濃縮本文核心重點"],
+                        ["/SUMMARY 或 /SUM", "與/TLDR類似,但可控制層次(段落、主題)", "/SUM level=2→兩層摘要"],
+                        ["/BRIEF", "要求簡短回答,常搭配/TLDR", "/BRIEF 解釋這篇論文結論"],
+                        ["/DETAIL", "要求更深入的技術性說明", "/DETAIL 說明此演算法背後原理"],
+                        ["/EXPAND", "擴展前一段內容,補充細節", "/EXPAND 上一段第3點內容"]
+                    ]
+                },
+                {
+                    title: "二、語氣與難度調整指令",
+                    data: [
+                        ["/ELI5", "Explain Like I'm 5:用最簡單方式說明", "/ELI5 什麼是量子糾纏?"],
+                        ["/EXPLAIN", "以一般語氣逐步解釋原理或流程", "/EXPLAIN how GPT works"],
+                        ["/FORMAL", "以正式學術語氣輸出", "/FORMAL 重寫以下段落"],
+                        ["/CASUAL", "用輕鬆口語化語氣", "/CASUAL 解釋 AI是什麼"],
+                        ["/TEACH", "用「教學模式」講解,逐步引導", "/TEACH 反應速率定律"]
+                    ]
+                },
+                {
+                    title: "三、輸出格式控制指令",
+                    data: [
+                        ["/TABLE", "以表格呈現資訊", "/TABLE 比較 NTU 與NCKU 醫學系入學條件"],
+                        ["/LIST", "以條列方式輸出", "/LIST Alzheimer's 症狀"],
+                        ["/CODE", "以程式碼區塊輸出(自動加上語言標記)", "/CODE python 輸出Hello world"],
+                        ["/MARKDOWN", "強制使用 Markdown 結構排版", "/MARKDOWN 整理這篇文章架構"],
+                        ["/RAW", "輸出未格式化的純文字(常用於開發)", "/RAW 給我純文字版本"]
+                    ]
+                },
+                {
+                    title: "四、內容重構與語言調整指令",
+                    data: [
+                        ["/REWRITE", "以更自然或符合語氣的方式重寫句子", "/REWRITE 成正式報告用語氣"],
+                        ["/PARAPHRASE", "保留語意但變換說法", "/PARAPHRASE 以下段落"],
+                        ["/TRANSLATE", "翻譯(可自動偵測語言)", "/TRANSLATE 英文 繁體中文"],
+                        ["/SIMPLIFY", "降低句子難度,使更易懂", "/SIMPLIFY 這段技術說明"],
+                        ["/POLISH", "修飾文風,使語句更流暢", "/POLISH 這篇短文"]
+                    ]
+                },
+                {
+                    title: "五、互動與行為控制指令",
+                    data: [
+                        ["/CONTINUE", "要求模型接續前一段中斷輸出", "/CONTINUE"],
+                        ["/RESET", "清除上下文(僅語義層,非真正系統重置)", "/RESET 開新話題"],
+                        ["/ROLE", "指定臨時角色(相當於「扮演模式」)", "/ROLE 你是醫學教授,請說明BACE1機制"],
+                        ["/COMPARE", "對比兩個概念或模型", "/COMPARE GPT-4和GPT-5的差異"],
+                        ["/WHY", "要求模型闡述原因或論證過程", "/WHY Alzheimer's難以治癒?"]
+                    ]
+                }
+            ];
+
+            // Render all sections into the body
+            document.addEventListener('DOMContentLoaded', () => {
+                const container = document.querySelector('.command-sections-container');
+                if (container) {
+                    sections.forEach(section => {
+                        container.innerHTML += generateCommandSection(section.title, section.data);
+                    });
+                }
+            });
+        </script>
+
+        <!-- Container for dynamically generated sections -->
+        <div class="command-sections-container">
+            <!-- Sections will be inserted here by JavaScript -->
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-10 pt-4 border-t text-center text-sm text-gray-500">
+            <p>資料來源：回應調整指令指南 (PDF)</p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
