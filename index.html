@@ -27,9 +27,9 @@
             border-spacing: 0; /* 移除單元格間隙 */
         }
         .styled-table th, .styled-table td {
-            /* 移除單元格邊框，改用底部邊框和容器邊框 */
+            /* 關鍵調整：將上下 padding 從 1rem 縮小到 0.5rem */
             border: none;
-            padding: 1rem 1.5rem;
+            padding: 0.5rem 1.5rem; 
             text-align: left;
             vertical-align: top;
             /* 模擬水平分隔線 */
@@ -41,6 +41,8 @@
             border-bottom: 3px solid #1f2937;
             background-color: #e5e7eb;
             color: #1f2937;
+            padding-top: 0.75rem; /* 讓表頭稍微高一點點，視覺上更舒適 */
+            padding-bottom: 0.75rem;
         }
         /* 移除最後一行的底部邊線 */
         .styled-table tbody tr:last-child td {
@@ -207,7 +209,7 @@
 
         <!-- Footer -->
         <footer class="mt-10 pt-4 border-t text-center text-sm text-gray-500">
-            <p>資料來源：回應調整指令指南 (PDF)</p>
+            <p>資料來源：ChatGPT + MadmacWang</p>
         </footer>
 
     </div>
