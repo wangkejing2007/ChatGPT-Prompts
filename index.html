@@ -14,8 +14,9 @@
             background-color: #f7f9fb;
         }
         /* Custom styling for responsive tables */
+        /* 移除 table-container 的 overflow-x: auto，讓表格寬度受限於父容器 */
         .table-container {
-            overflow-x: auto;
+            /* overflow-x: auto; - 移除此行以避免強制水平滾動 */
             -webkit-overflow-scrolling: touch;
         }
         
@@ -25,23 +26,33 @@
             width: 100%;
             border-collapse: separate; 
             border-spacing: 0; /* 移除單元格間隙 */
+            table-layout: fixed; /* 關鍵：確保表格遵循指定的欄位寬度 */
         }
         .styled-table th, .styled-table td {
-            /* 關鍵調整：將上下 padding 從 1rem 縮小到 0.5rem */
+            /* 縮小行高 */
             border: none;
             padding: 0.5rem 1.5rem; 
             text-align: left;
             vertical-align: top;
             /* 模擬水平分隔線 */
             border-bottom: 2px solid #4b5563; 
-            white-space: nowrap; 
+            /* 關鍵：移除 white-space: nowrap; 允許文字換行以適應手機寬度 */
+            /* white-space: nowrap; - 已移除 */
+            word-wrap: break-word; /* 允許長單詞斷行 */
         }
+        
+        /* 關鍵：設定欄位寬度比例 */
+        .styled-table col:nth-child(1) { width: 25%; } /* 指令欄 */
+        .styled-table col:nth-child(2) { width: 40%; } /* 功能欄 - 佔最大比例 */
+        .styled-table col:nth-child(3) { width: 35%; } /* 實際應用範例欄 */
+
+
         .styled-table thead th {
             /* 表頭底部使用更粗的分隔線 */
             border-bottom: 3px solid #1f2937;
             background-color: #e5e7eb;
             color: #1f2937;
-            padding-top: 0.75rem; /* 讓表頭稍微高一點點，視覺上更舒適 */
+            padding-top: 0.75rem; 
             padding-bottom: 0.75rem;
         }
         /* 移除最後一行的底部邊線 */
@@ -120,6 +131,11 @@
                             <!-- 新增包裹 div 來處理外框、圓角和陰影 -->
                             <div class="border-box-wrapper bg-white">
                                 <table class="styled-table">
+                                    <colgroup>
+                                        <col> <!-- 指令欄 -->
+                                        <col> <!-- 功能欄 -->
+                                        <col> <!-- 實際應用範例欄 -->
+                                    </colgroup>
                                     <thead>
                                         <tr>
                                             <th scope="col" class="text-xs font-semibold uppercase tracking-wider">指令</th>
@@ -209,7 +225,7 @@
 
         <!-- Footer -->
         <footer class="mt-10 pt-4 border-t text-center text-sm text-gray-500">
-            <p>資料來源：ChatGPT + MadmacWang</p>
+            <p>資料來源：回應調整指令指南 (PDF)</p>
         </footer>
 
     </div>
